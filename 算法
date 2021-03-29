@@ -1,0 +1,268 @@
+线性表：
+typedef struct Table{
+    int *head;//这是头指针，这个数组的头指针就是这个head，但是这个数组本身是动态的，数据实际有多大并不确定
+    int lenght;//这是本身实际占用的内存大小
+    int size;//这是系统分配的总内存大小
+}table;
+
+//初始化这个顺序表
+#define Size 5;
+table initTable(){
+    table t;
+    t.head=(int *)malloc(Size*sizeof(int));
+    if(!t.head){
+        printf("error");
+        return -1;
+    }
+    t.lenght=0;
+    t.size=Size;
+    return t;
+}
+
+
+//插入操作
+void insertTable(table t,int elem,int add){
+    if(add>t.lenght || add<0){
+        printf("插入的位置有问题请重新插入");
+        return -1;
+    }
+    if(t.lenght==t.size){
+        t.head=(int *)realloc(t.size*2*sizeof(int));
+        t.size*=2;
+    }
+    for(int i=lenght-1;i>=add-1;i++){
+        t.head[i+1]=t.head[i];
+    }
+    t.head[add-1]=elem;
+    t.lenght++;
+}
+//这里可以得到的经验：1.注意检查客户的需求，注意检查自己的能力2.记住完成操作之后还是要偏移的原则，这样就不会导致偏移之后导致位置出现问题，3.注意链表的一些重要的位置定位的问题
+
+
+void tableDelect(table t){
+    for(int i=add;i<=lenght-1;i++){
+        t.head[i]=t.head[i+1];
+    }
+    t.lenght--;
+}
+//这里可以总结的经验：每次完成什么操作之后要记得维护自己的区域
+
+void FindTable(int add,table t){
+    printf("%d \n"t.head[add]);
+}
+
+int FindTable2(table t,int findNum){
+    int index=-1;
+    for(int i=0;i<t.lenght;i++){
+        if(i==findNum){
+            index=i;
+            break;
+        }
+    }
+    return index;
+}
+//这个没什么好说的，该注意的只有多次匹配的问题,当然这里也有一个小技巧，这里可以形成一个-1；注意不是借助其他的方式形成的，而是自然传回的-1；这一点很有意思
+
+
+void changeTable(table t,int elem,int newElem){
+    for(int i=0;i<lenght;i++){
+        int location=FindTable2(t,ele);
+        if(location!=-1){
+            t.head[location]=newElem;
+        }else{
+            return ;
+        }
+    }
+}
+
+
+
+
+
+void displayTable(table t){
+    for(int i=0;i<t.lenght;i++){
+        printf("%d ",t.head[i]);
+    }
+    printf("\n"):
+}
+
+int main(){
+    table t=initTable();
+    for(int i=1;i<=t.size;i++){
+        scanf("%d",t.head[i-1]);
+        t.lenght++;
+    }
+    printf("存入的数字有");
+    displayTable(t);
+    free(t.head);
+    return 0;
+}
+
+
+//单链表==============================================================================================================================================
+typedef struct Link{
+    char elem;
+    struct Link * next;
+}link;
+
+
+link *InitLink(){
+    link p=NULL;
+    p=(link *)malloc(sizeof(link));
+    if(p==NULL){
+        printf("NO MEMERY");
+        exit -1;
+    }
+    p->next==NULL;
+    for(int i=0;i<5;i++){
+        link * tmp=NULL;
+        if(p->next==NULL){
+            tmp=p->next;
+        }else{
+            tmp=tmp->next;
+        }
+        tmp=(link *)malloc(sizeof(link));
+        if(!tmp){
+            printf("NO MEMERY");
+            exit -1;
+        }
+        tmp->elem=i;
+        tmp->next=NULL;
+    }
+    return p;
+}
+//这里是编程的思想出了问题，应该是先要创建一个新的节点后将节点加入而没有别的奇怪的操作，这是思路还没有完善
+
+void InitLink(){
+    link *p=NULL;
+    link *tmp=(link *)malloc(sizeof(link));
+    tmp->elem=1;
+    tmp->next=NULL;
+    p=tmp;
+    tmp=p->next;
+    for(int i=2;i<=5;i++){
+        link *a=(link *)malloc(sizeof(link));
+        if(a==NULL){
+            printf("NO MEMERY");
+            exit -1;
+        }
+        a->elem=i;
+        a->next=NULL;
+        tmp=a;
+        tmp=a->next;
+    }
+}
+//这里的思想就运用地很好
+
+void displayTable(table t){
+    link * tmp=t->next;
+    while(!tmp){
+        printf("%d",tmp);
+        tmp=tmp->next;
+    }
+    printf("\n");
+}
+
+
+link *InsertLink(link l,int add,int elem){
+    if(add<0){
+        printf("Insert Number is wrong");
+        exit -1;
+    }
+    link * tmp=NULL;
+    for(int i=0;i<=add-1;i++){
+        if(i=0){
+            tmp=l->next;
+        }else{
+            tmp=tmp->next;
+        }
+        if(!tmp){
+            printf("Insert Number is wrong");
+            return l;
+        }
+    }
+    link *a=(link *)malloc(sizeof(link));
+    a->elem=elem;
+    a->next=tmp->next;
+    tmp->next=a;
+    return l;
+}
+//这里的if语句明显会浪费时间，所以可以将循环的次数放出去，就可以将这个位置轻松地定位到了,2.这里的插入的时候可以明白地知道单链表一个方向的时候，知道前一个方向才可以知道后面两个的信息，想要信息最大化就要在前面找位置，不然就会导致丢掉部分信息而没有办法来插入
+
+void DelectElem(link l,int add){
+    if(add<0){
+        printf("DelectNum is wrong");
+        return ;
+    }
+    link *tmp=NULL;
+    tmp=l.next;
+    if(add=0){
+        l->next=tmp->next;
+        tmp->next=NULL;
+        free(tmp);
+    }
+    for(int i=1;i<=add-1;i++){
+        tmp=tmp->next;
+    }
+    link *q=tmp->next;
+    tmp->next=q->next;
+    q->next=NULL;
+    free(q);
+}
+
+int FindElem(link l,int elem){
+    link *tmp=l->next;
+    int add=-1;
+    int count=0;
+    while(!tmp){
+        if(elem==tmp->elem){
+            add=count;
+        }
+        tmp=tmp->next;
+        count++;
+    }
+    return add;
+}
+
+
+void DelectElem2(link l,int elem){
+    int add=FindElem(l,elem);
+    while(add!=-1){
+    DelectElem(l,add);
+    add=FindElem(l,elem);
+    }
+}
+//这里有一个空执行的说法：就是先放在头节点，这样就不用再去计量次数
+
+
+
+
+
+//静态链表================================================================================================================================
+#include <stdio.h>
+#define maxSize 6
+typedef struct{
+    int data;
+    int cur;
+}component;
+
+void reserveArr(component *array);
+
+int initArr(component *array);
+
+void displayArr(component *array,int body);
+
+int mallocArr(component *array);
+int main(){
+    component array[maxSize];
+    int body=initArr(array);
+    printf("静态链表是\n");
+    displayArr(array,body);
+    return 0;
+}
+
+void reserveArr(component *array){
+    for(int i=0;i<maxSize;i++){
+        
+    }
+}
