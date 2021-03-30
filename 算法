@@ -241,7 +241,7 @@ void DelectElem2(link l,int elem){
 //静态链表================================================================================================================================
 #include <stdio.h>
 #define maxSize 6
-typedef struct{
+typedef struct {
     int data;
     int cur;
 }component;
@@ -253,16 +253,222 @@ int initArr(component *array);
 void displayArr(component *array,int body);
 
 int mallocArr(component *array);
+
 int main(){
     component array[maxSize];
     int body=initArr(array);
-    printf("静态链表是\n");
-    displayArr(array,body);
-    return 0;
+    printf("静态链表是:\n");
+    displayArr(array,body):
 }
 
 void reserveArr(component *array){
     for(int i=0;i<maxSize;i++){
-        
+        array[i].cur=i+1;
+        array[i].data=-1;
+    }
+    array[maxSize-1]=0;
+}
+//这里的东西只是一个一个填好而已，然后再去维护最后一个位置的0，方便后续的管理
+
+int mallocArr(component *array){
+    int i=arr[0].cur;
+    if(arr[0].cur){
+        arr[0].cur=arr[i].cur;
+    }
+    return i;
+}
+//这里已经是拿到了然后再回来维护一下数据
+
+int initArr(component *array){
+    reserveArr(array);
+    int body=mallocArr(array);
+    int tempBody=body;
+    for(int i=1;i<3;i++){
+        int j=mallocArr(array);
+        array[j].data=i;
+        array[j].cur=0;
+        array[tempBody].cur=j;
+        tempBody=j;
+    }
+    return body;
+}
+
+void displayArr(component *array){
+    int body=initArr(array);
+    for(int i=array[body].cur;i!=0;i=array[i].cur){
+        printf("%d ",array[i].data);
+    }
+    printf("\n");
+}
+
+void insertArr(component *array,int body,int add,char a){
+    int tempBody=body;
+    for(int i=1;i<add;i++){
+        tempBody=array[tempBody].cur;
+    }
+    int j=mallocArr(array);
+    array[j].data=a;
+    array[j].cur=array[tempBody].cur;
+    array[tempBody].cur=j;
+}
+
+void findElem(component *array,int elem,int body){
+    int findNum=-1;
+    int count=-1;
+    for(int i=body;i!=0;i=array[i].cur){
+        count++;
+        if(array[i].cur==elem){
+            findNum=count;
+            return findNum;
+        }
+    }
+    return findNum;
+}
+
+void DelectElem(component *array,int add,int body){
+
+    int tempBody=body;
+    if(add<0){
+        printf("Delect Number is Wrong");
+        return ;
+    }
+
+    for(int i=1;i<add && i!=0;i++){
+        int tempBody=array[tempBody].cur;
+    }
+    if(i=0){
+        printf("Delect Number is wrong\n");
+        return ;
+    }
+    int j=array[tempBody].cur;
+    array[tempBody].cur=array[j].cur;
+    array[j].data=-1;
+    array[j].cur=array[0].cur;
+    array[0].cur=j;
+}
+
+//双向链表========================================================================================================================
+typedef struct line{
+    struct line *prior;
+    int data;
+    struct line *next;
+}line;
+
+line *InitLine(){
+    line * head=(line *)malloc(sizeof(line));
+    head->data=1;
+    head->prior=NULL;
+    head->next=NULL;
+    line *tempLine=(line *)malloc(sizeof(line));
+    tempLine->prior=head;
+    head->next=tempLine;
+    tempLine->data=2;
+    tempLine->next=NULL;
+    for(int i=2;i<3;i++){
+        line *tmp=(line *)malloc(sizeof(line));
+        tmp->data=i;
+        tmp->next=NULL;
+        tmp->prior=tempLine;
+        tempLine->next=tmp;
+        tempLine=tmp;
+    }
+    return head;
+}
+
+void displayLine(line head){
+    for(line tempLine=head;tempLine==NULL;tempLine=tempLine->next){
+        printf("%d ",tempLine->data);
+    }
+    printf("\n");
+}
+
+line * InsertLine(line *head,int add,int data){
+    line *tempLine=head;
+    if(add<0){
+        printf("Insert Number is wrong");
+    }else if(add==0){
+        line *tmp=(line *)malloc(sizeof(line));
+        tmp->prior=NULL;
+        tmp->next=head;
+        head->prior=tmp;
+        tmp->data=data;
+        head=tmp;
+        return head;
+    }
+    for(int i=1;i<add;i++){
+        tempLine=tempLine->next;
+    }
+    line *tmp=(line *)malloc(sizeof(line));
+    tmp->next=tempLine->next;
+    tempLine->next=tmp;
+    tmp->data=data;
+    tmp->prior=tempLine;
+    tmp->next->prior=tmp;
+}
+//这里可以发现要检查一下位置，而且这个位置其实很危险，有头和尾都是非常重要的位置
+
+
+//约瑟夫杯问题
+line * initLine(){
+    line *head=(line *)malloc(sizeof(line));
+    head->data=1;
+    head->prior=head;
+    head->next=head;
+    line tempLine=head;
+    for(int i=2;i<6;i++){
+        line tmp=(line *)malloc(sizeof(line));
+        tmp->next=head;
+        head->prior=tmp;
+        tmp->data=i;
+        tempLine->next=tmp;
+        tmp->prior=tempLine;
+        tempLine=tmp;
     }
 }
+
+void DelectLine(line *head,line *tempLine){
+    tempLine->prior->next=tempLine->next;
+    tempLine->next->prior=tempLine->prior;
+    free(tempLine);
+    tempLine=NULL;
+
+}
+
+int main(){
+    line *head=initLine();
+    tempLine=head;
+    for(int i=1;;i++){
+        if(tempLine->next==tempLine){
+            break;
+        }
+        if(i==k){
+            i=1;
+            DelectLine(head,tempLine)
+        }
+        tempLine=tempLine->next;
+    }
+    printf("%d",tempLine->data);
+    return 0;
+}
+
+
+//栈============================================================================================================================================
+int push(int *arr,int top,int elem){
+    arr[++top]=elem;
+    return top;
+}
+
+int pop(int *arr,int top,int *elem){
+    if(top==-1){
+        printf("NONE");
+        return top;
+    }
+    *elem=arr[top--];
+    return top;
+}
+
+//链栈============================================================================================================================================
+typedef struct lineStack{
+    int data;
+    struct lineStack *next;
+}lineStack;
