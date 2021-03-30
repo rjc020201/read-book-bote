@@ -472,3 +472,64 @@ typedef struct lineStack{
     int data;
     struct lineStack *next;
 }lineStack;
+
+
+lineStack *initStack(){
+    linkStack *l=(lineStack *)malloc(sizeof(lineStack));
+    l->next=NULL;
+}
+
+void push(lineStack *l,int data){
+    lineStack *temp=l->next;
+    while(!temp){
+        temp=temp->next;
+    }
+    lineStack *new=(lineStack *)malloc(sizeof(lineStack));
+    new->data=data;
+    new =temp->next;
+    new->next=NULL;
+}
+
+void push2(lineStack *head,int data){
+    lineStack *new=(lineStack *)malloc(sizeof(lineStack));
+    new->data=data;
+    new->next=head->next;
+    head->next=new;
+}
+
+void pop(lineStack *head,int *data){
+    lineStack *temp=head;
+    lineStack *q=head;
+    int count=0;
+    while(!temp){
+        if(count!=2){
+            count++;
+        }else{
+            q=q->next;
+        }
+        temp=temp->next;
+    }
+    if(count==1){
+        printf("No Data");
+    }else{
+        lineStack *r=q->next;
+        *data=r->data;
+        q->next=NULL;
+        free(r);
+    }
+}
+//这里的编程思想很有意思，这是一个延步器，这里的是共速指针，这样就可以很好的抓到该抓到的节点
+//说到这样的共速指针,这里写一下快慢指针,但是我目前不知道这是什么结构，按照正常的单链表也是可以做到这样的快慢指针，只是要加上判断，所以这样的话就会不得不加上判断语句，这样的得到的时间上的节省还是太少了
+
+
+void pop2(lineStack *head,int *data){
+    lineStack *new=(lineStack *)malloc(sizeof(lineStack));
+    new->data=data;
+    new->next=head->next;
+    head->next=new;
+}
+
+//顺序队列的实现
+void enQueue(int *array,int front,int rear){
+    
+}
