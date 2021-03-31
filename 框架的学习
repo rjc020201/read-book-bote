@@ -1,0 +1,41 @@
+Spring 框架使用的jar都比较小，一般只有1M或者几百kb，Spring核心功能所需的jar总共在3M左右
+数据访问模块Data Access/Integration(里面有JDBC ORM(mybatis) OXM JMS Transactions),Web(做web开发的)
+AOP面向切面编程 核心容器IOC
+Test部分拿来测试一下功能
+
+Spring IOC(控制反转)是一种新的思想，指传统意义上由程序操作的对象的调用权交给容器来调用，这样就可以通过容器来实现对象的创建，属性赋值，依赖的管理
+依赖：一个类中含有另一个类的实例就说这个类依赖于后面一个类，IoC的实现是依赖注入，程序代码不做任何的定位查询，这些工作由程序自行完成
+依赖注入DI是指程序运行过程中，若需要调用另外一个对象协助的时候由容器来创建和管理这个对象
+这样被管理的对象又被称为Bean
+
+JAVA中创建对象有构造方法和反射，序列化把对象保存在文件中，使用克隆也可以做到，ioc的是存在以前的思想的，动态代理
+ioc在servlet中的体现，由于我的idea写不了这个东西所以我就不手多去敲一次了，总之大概印象有然后在看点blog好了
+servlet 1创建类继承HttpServlet
+        2在web.xml 注册servlet 使用<servlet-name>myservlet</servlet-name>
+                                <servlet-class>com.bjsxt.controller</servlet-class>
+        3从来没有创建过servlet对象
+        4Servlet 是Tomcat服务器来创建的 
+            同样的思想，Servlet也是容器，里面存放的是Servlet对象，Listener,Filter对象
+    
+IoC的技术实现：
+    DI是ioc的技术实现
+    你只需要在程序中提供对象的名称就可以了，至于对象如何在容器中创建，赋值，查找都由容器内部实现了
+
+spring的底层创建对象实际上用的是反射机制
+那么来做一个例子来体验一下spring的IoC
+这里创建了一个maven项目，可以看到有一个pom文件，里买年应该是一些管理包
+然后在main下面创建好一个resources(指定成为一个resorces.root文件);
+修改pom文件来组织一下项目，首先是<groudId></groudId><artifactId></artifactId><version></version>是本项目的坐标
+ 然后是<properties></properties>这个版本号1.8
+<dependencies></dependencies>是一个单元测试
+<build></build>是插件，可以删掉
+
+实现spring的话：创建maven项目，加入maven的依赖，加入spring的依赖，版本，单元测试junit依赖，方便测试程序，然后就创建类，创建spring需要的配置文件,这些类是由spring创建和管理的
+测试一下就可以了
+<dependency>
+    <groudId>org.springframework</groudId>
+    <artifactId>spring-content</artifactId>
+    <version>xxx.xxx.xxx</version>
+</dependency>
+这个是类的依赖
+
