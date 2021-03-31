@@ -530,6 +530,140 @@ void pop2(lineStack *head,int *data){
 }
 
 //顺序队列的实现
-void enQueue(int *array,int front,int rear){
+#include <stdio.h>
+#define maxSize 5
+void enQueue(int *a,int front,int rear,int data){
+    if((rear+1)%maxSize==front){
+        printf("Queue is full\n");
+        return;
+    }
+    a[(rear)%maxSize]=data;
+    rear=(rear+1)%maxSize;
+    return rear;
+}
     
+void DeQueue(int *a,int front,int rear,int *data){
+    if(rear==font){
+        printf("Queue is empty\n");
+        return ;
+    }
+    *data=a[front];
+    front++;
+    front=front%maxSize;
+    return front;
+}
+//单退的时候可以只是维持一个rear，但是这样维护下来的东西没有什么有用的利用方法
+
+//栈式队列===============================================================================================================================================
+typedef struct QNode{
+    int data;
+    struct QNode *next;
+}QNode;
+
+QNode *initQueue(){
+    QNode *front=(QNode *)malloc(sizeof(QNode));
+    return front;
+}
+
+void DeQueue(QNode *front,QNode *rear,int *data){
+    if(front==NULL){
+        printf("Queue is empty\n");
+        return ;
+    }
+    *data=front->data;
+    front=front->next;
+}
+
+void EnQueue(QNode *front,QNode *rear,int data){
+    QNode *tmp=(QNode *)malloc(sizeof(QNode));
+    tmp->data;
+    tmp->next=NULL;
+    rear->next=tmp;
+    rear=tmp;
+}
+//注意维护双端指针的位置，单链的时候也必要地维护一下尾节点或者相应的头节点的信息,同时这个队列也可以拥有头节点，方便进行头插
+
+
+
+
+//串的块链的存储方式
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define linkNum 3
+typedef struct Link{
+    char a[linkNum];
+    struct Link *next;
+}link;
+
+link *initLink(link *head,char *str);
+void displayLink(link *head);
+int main(){
+    link *head=NULL;
+    head=initLink(head,"fjiefs");
+    displayLink(head);
+    return 0;
+}
+
+link *initLink(line head,char *str){
+    link *tmp=(link *)malloc(sizeof(link));
+    int lenght=strlen(str);
+    int count=lenght/linkNum;
+    if(lenght/linkNum){
+        count++:
+    }
+    for(int i=0;i<count;i++){
+        int j=0;
+        for(;j<linkNum;j++){
+            if(i*linkNum+j<lenght){
+                temp->a[j]=str[i*linkNum+j];
+            }else{
+                temp->a[j]='#';
+            }
+        }
+        if(j+i*linkNum<lenght){
+            link *q=(link *)malloc(sizeof(link));
+            q->next=NULL;
+            tmp->next=q;
+            tmp=q->next;
+        }
+    }
+}
+//这个的边界判断还是很有点东西的，这里的lenght就是真长度，如果已经等于真长了就不用再创建节点了，同样的如果过了真长就要填节点，如果比真长小就要对应装填节点
+
+
+
+void displayLink(link *head){
+    link *temp=head;
+    while(temp){
+        printf("%s",temp->a);
+        temp=temp->next;
+    }
+    printf("\n");
+}
+
+#include <stdio.h>
+#include <string.h>
+int mate(char *B,char *A){
+    int i=0,j=0;
+    while(i<strlen(B) || j<strlen(A)){
+        if(B[j]==A[i]){
+            i++;
+            j++;
+        }else{
+
+            i=i-j+1;
+            j=0;
+        }
+    }
+    if(j==strlen(A)){
+        return i-strlen(A)+1;
+    }
+    return 0;
+}
+
+int main(){
+    int number=mate("abcabc","ab");
+    printf("%d",number);
+    return 0;
 }
